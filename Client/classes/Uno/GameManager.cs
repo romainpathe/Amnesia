@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Sockets;
-using Server.components.Uno;
+using Client.components.Uno;
 
-namespace Server.classes.Uno
+namespace Client.classes.Uno
 {
+    [Serializable()]
     public class GameManager
     {
         public readonly Stack<Card> ShuffledDeck = CardManager.CreateDeck("random");
@@ -13,7 +13,7 @@ namespace Server.classes.Uno
         public readonly ColorSelector ColorSelector = new ColorSelector();
         private Stack<Card> _discardPile = new Stack<Card>();
         public Card CurrenCard { get; set; }
-        public readonly PlayerManager PlayerManager = new PlayerManager();
+        public readonly List<Player> Players = new List<Player>();
         internal int CurrentPlayerIndex { get; set; } = 0;
         private int _direction = 1;
         private int _currentColor = 0;
@@ -23,7 +23,7 @@ namespace Server.classes.Uno
 
         public void StartGame()
         {
-            // PlayerManager.AddPlayer(new Player(new Socket()));
+            Players.Add(new Player());
             DistributeCards();
             AddDiscardPile(ShuffledDeck.Pop());
             CurrentGame();
@@ -34,7 +34,7 @@ namespace Server.classes.Uno
             DrawDeck();
             while (true)
             {
-                PlayerManager.Players[CurrentPlayerIndex].DrawHand();
+                Players[CurrentPlayerIndex].DrawHand();
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.LeftArrow:
@@ -229,7 +229,7 @@ namespace Server.classes.Uno
         {
             for (var i = 0; i < NumberOfCardsToDraw; i++)
             {
-                foreach (var player in PlayerManager.Players)
+                foreach (var player in Players)
                 {
                     var card = ShuffledDeck.Pop();
                     player.AddCardToHand(card);
@@ -239,7 +239,7 @@ namespace Server.classes.Uno
 
         public Player CurrentPlayer()
         {
-            return PlayerManager.Players[CurrentPlayerIndex];
+            return Players[CurrentPlayerIndex];
         }
 
         // public void Redraw()

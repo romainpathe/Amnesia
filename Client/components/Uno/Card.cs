@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
-using Server.classes.Uno;
-using Server.interfaces;
+using Client.classes.Uno;
+using Client.interfaces;
 
-namespace Server.components.Uno
+namespace Client.components.Uno
 {
+    [Serializable()]
     public class Card : IDrawable, ICloneable
     {
         
-        public readonly bool _isDeck;
+        private readonly bool _isDeck;
         public string Id = Guid.NewGuid().ToString();
         public ConsoleColor Color { get; set; }
         public string Value { get; set; }

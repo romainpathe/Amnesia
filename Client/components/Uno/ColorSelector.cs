@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Server.classes.Uno;
-using Server.interfaces;
+using Client.classes.Uno;
+using Client.interfaces;
 
-namespace Server.components.Uno
+namespace Client.components.Uno
 {
     [Serializable()]
     public class ColorSelector: IDrawable

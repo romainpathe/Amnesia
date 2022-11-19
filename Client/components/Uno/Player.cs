@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Sockets;
-using Server.classes.Uno;
+using Client.classes.Uno;
 
-namespace Server.components.Uno
+namespace Client.components.Uno
 {
     [Serializable()]
     public class Player
     {
         public string Name { get; }
-        public Socket Socket { get; }
         public List<Card> Hand { get; }
         public static List<Card> OldHand { get; set; }
         public int WindowsHeight { get; set; }
@@ -19,9 +17,8 @@ namespace Server.components.Uno
         public int LastCardSelected { get; set; }
         public bool ColorSelector { get; set; }
 
-        public Player(Socket socket)
+        public Player()
         {
-            Socket = socket;
             SelectedDeck = true;
             // Console.WriteLine("Enter your name: ");
             // Name = Console.ReadLine();

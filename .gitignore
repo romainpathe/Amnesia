@@ -1,3 +1,6 @@
 ﻿.idea
-Client/obj/Debug
-Server/obj/Debug
+Client/obj
+Server/obj
+Client/bin
+Server/bin
+packages
