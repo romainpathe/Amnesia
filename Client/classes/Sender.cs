@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
@@ -21,12 +22,6 @@ namespace Client.classes
             _thread.Start();
         }
         
-        
-        // private static void SendString(string text)
-        // {
-        //     byte[] buffer = Encoding.ASCII.GetBytes(text);
-        //     ClientSocket.Send(buffer, 0, buffer.Length, SocketFlags.None);
-        // }
         public static void Send()
         {
             while (true)

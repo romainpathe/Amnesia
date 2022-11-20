@@ -10,7 +10,9 @@ namespace Client
     internal class Program
     {
         public static readonly Socket ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        public const int BUFFER_SIZE = 8192;
         private const int PORT = 1000;
+        public static readonly byte[] buffer = new byte[BUFFER_SIZE];
         public static string Id = null;
         
         public static int LongestCard { get; set; }
@@ -21,6 +23,7 @@ namespace Client
         public static void Main(string[] args)
         {
             // StartClient();
+            Console.CursorVisible = false;
             ConnectToServer();
             Writer.Init();
             Sender.Init();

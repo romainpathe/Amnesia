@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Linq;
+using Client.components;
 using Client.components.Uno;
+using Client.objects;
 
 namespace Client.classes.Uno
 {
     public static class GameAction
     {
         
-        public static void UpArrow(GameManager gameManager)
+        public static void UpArrow()
         {
             if (Player.SelectedDeck) return;
             if(Player.ColorSelector) return;
@@ -15,7 +17,7 @@ namespace Client.classes.Uno
             Player.Hand.First(card => card.IsSelected).IsSelected = false;
         }
         
-        public static void DownArrow(GameManager gameManager)
+        public static void DownArrow()
         {
             if(!Player.SelectedDeck) return;
             if(Player.ColorSelector) return;
@@ -24,7 +26,7 @@ namespace Client.classes.Uno
             if (fCard != null) fCard.IsSelected = true;
         }
         
-        public static void LeftArrow(GameManager gameManager)
+        public static void LeftArrow()
         {
             if (Player.ColorSelector)
             {
@@ -36,7 +38,7 @@ namespace Client.classes.Uno
             }
         }
         
-        public static void RightArrow(GameManager gameManager)
+        public static void RightArrow()
         {
             if (Player.ColorSelector)
             {
@@ -48,35 +50,43 @@ namespace Client.classes.Uno
             }
         }
         
-        public static void Space(GameManager gameManager)
+        public static void Space()
         {
             
         }
         
-        public static void Enter(GameManager gameManager)
+        public static void Enter()
         {
+            if (!GameManager.CanPlay) return;
             if (Player.SelectedDeck)
             {
-                Player.AddCardToHand(gameManager.ShuffledDeck.Pop());
-            }
-            else if (Player.ColorSelector)
-            {
-                GameManager.CurrenCard.Color = ColorSelector.CurrentColor();
-                Writer.ObjForWrite.Add(GameManager.CurrenCard);
-                Writer.ObjForClear.Add(gameManager.ColorSelector);
-                Player.ColorSelector = false;
-                Player.SelectedDeck = true;
-            }else
-            {
-                var canPlay =Player.CanPlayCurrentCard(gameManager);
-                if (!canPlay) return;
-                var card = Player.PlayCard(true);
-                if (card.Color == ConsoleColor.White)
+                var turn = new Turn()
                 {
-                    gameManager.ColorSelector.Draw();
-                }
-                gameManager.AddDiscardPile(card);
+                    PickUp = true,
+                };
+                Sender.ObjForSend.Add(new Send(new Json(JsonType.Turn, turn).Send()));
+                GameManager.CanPlay = false;
+                GameManager.DeckCard.IsSelected = false;
+                Writer.Write(GameManager.DeckCard);
             }
+            // else if (Player.ColorSelector)
+            // {
+            //     GameManager.CurrenCard.Color = ColorSelector.CurrentColor();
+            //     Writer.ObjForWrite.Add(GameManager.CurrenCard);
+            //     Writer.ObjForClear.Add(gameManager.ColorSelector);
+            //     Player.ColorSelector = false;
+            //     Player.SelectedDeck = true;
+            // }else
+            // {
+            //     var canPlay =Player.CanPlayCurrentCard(gameManager);
+            //     if (!canPlay) return;
+            //     var card = Player.PlayCard(true);
+            //     if (card.Color == ConsoleColor.White)
+            //     {
+            //         gameManager.ColorSelector.Draw();
+            //     }
+            //     gameManager.AddDiscardPile(card);
+            // }
         }
 
     }

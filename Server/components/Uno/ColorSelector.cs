@@ -82,7 +82,7 @@ namespace Server.components.Uno
             Debug.WriteLine("ColorSelector.Draw()");
             foreach (var card in ColorCards)
             {
-                Debug.WriteLine(card.Value);
+                // Debug.WriteLine(card.Value);
                 Writer.ObjForWrite.Add(card);
             }
         }

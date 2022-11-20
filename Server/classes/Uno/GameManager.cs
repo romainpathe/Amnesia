@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Threading;
 using Server.components;
 using Server.components.Uno;
+using Server.objects;
 
 namespace Server.classes.Uno
 {
     public class GameManager
     {
         public readonly Stack<Card> ShuffledDeck = CardManager.CreateDeck("random");
-        private Card _deckCard = new Card();
+        public Card _deckCard = new Card();
         
         public readonly ColorSelector ColorSelector = new ColorSelector();
         private Stack<Card> _discardPile = new Stack<Card>();
-        public Card CurrenCard { get; set; }
+        public Card CurrentCard { get; set; }
         public readonly PlayerManager PlayerManager = new PlayerManager();
         internal int CurrentPlayerIndex { get; set; } = 0;
         private int _direction = 1;
@@ -25,14 +26,27 @@ namespace Server.classes.Uno
         public void StartGame()
         {
             DistributeCards();
-            CurrenCard = ShuffledDeck.Pop();
-            AddDiscardPile(CurrenCard);
+            CurrentCard = ShuffledDeck.Pop();
+            AddDiscardPile(CurrentCard);
             
             foreach (var player in PlayerManager.Players)
             {
-                player.SendHand();
-                SendCurrentCard(player);
-                SendDeck(player);
+                _deckCard.IsSelected = false;
+                _deckCard.X = Console.WindowWidth / 2 + 2;
+                _deckCard.Y = 1;
+                _deckCard.Value = ShuffledDeck.Count.ToString();
+                
+                
+                var x = new Turn
+                {
+                    CanPlay = true,
+                    Hand = player.Hand,
+                    CurrentCard = CurrentCard,
+                    DeckCard = _deckCard,
+                    PickUp = false
+                };
+                var y = new Json(JsonType.Turn, x).Send();
+                Sender.Add(new Send(player, y));
             }
             
             
@@ -59,7 +73,6 @@ namespace Server.classes.Uno
             // DrawDeck();
             // while (true)
             // {
-            //     PlayerManager.Players[CurrentPlayerIndex].DrawHand();
             //     switch (Console.ReadKey(true).Key)
             //     {
             //         case ConsoleKey.LeftArrow:
@@ -231,15 +244,15 @@ namespace Server.classes.Uno
 
         public void AddDiscardPile(Card card)
         {
-            if (CurrenCard != null)
-            {
-                Writer.ObjForClear.Add(CurrenCard);
-            }
-            CurrenCard = card;
+            // if (CurrentCard != null)
+            // {
+            //     Writer.ObjForClear.Add(CurrentCard);
+            // }
+            CurrentCard = card;
             _discardPile.Push(card);
             card.X = Console.WindowWidth / 2 - Card.Width;
             card.Y = 1;
-            Writer.ObjForWrite.Add(card);
+            // Writer.ObjForWrite.Add(card);
         }
         private void DrawDeck()
         {
@@ -250,21 +263,6 @@ namespace Server.classes.Uno
             Writer.ObjForWrite.Add(_deckCard);
         }
 
-        private void SendDeck(Player player)
-        {
-            _deckCard.IsSelected = CurrentPlayer().SelectedDeck;
-            _deckCard.X = Console.WindowWidth / 2 + 2;
-            _deckCard.Y = 1;
-            _deckCard.Value = ShuffledDeck.Count.ToString();
-            var x = new Json(JsonType.Deck, _deckCard).Send();
-            Sender.Add(new Send(player, x));
-        }
-        
-        private void SendCurrentCard(Player player)
-        {
-            var x = new Json(JsonType.CurrentCard, CurrenCard).Send();
-            Sender.Add(new Send(player, x));
-        }
         
         private void DistributeCards()
         {

@@ -8,7 +8,7 @@ namespace Client.classes
     public class Json
     {
         public JsonType Type { get; set; }
-        public string userId = Program.Id; 
+        public string UserId = Program.Id; 
         public object obj { get; set; }
         // public string json { get; set; }
         
@@ -56,7 +56,8 @@ namespace Client.classes
         public byte[] Send()
         {
             var res = Serialize();
-            Debug.WriteLine(res);
+            // Debug.WriteLine(res);
+            Debug.WriteLine("Send Data:" + res);
             return Encoding.ASCII.GetBytes(res);
             // Serialize();
             // Debug.WriteLine(json);
@@ -73,9 +74,8 @@ namespace Client.classes
     public enum JsonType
     {
         Init = 1,
-        CurrentCard = 2,
         Hand = 3,
-        Deck = 4,
+        Turn = 5,
     }
     
 }

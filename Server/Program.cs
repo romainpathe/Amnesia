@@ -12,7 +12,7 @@ namespace Server
     internal class Program
     {
         private static readonly Socket ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        public const int BUFFER_SIZE = 2048;
+        public const int BUFFER_SIZE = 8192;
         private const int PORT = 1000;
         public static readonly byte[] buffer = new byte[BUFFER_SIZE];
         public static readonly Random Random = new Random();
@@ -23,7 +23,7 @@ namespace Server
         {
             
             // StartServer();
-            
+            Console.CursorVisible = false;
             SetupServer();
             Sender.Init();
             Receiver.Init();

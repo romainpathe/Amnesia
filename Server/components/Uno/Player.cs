@@ -52,7 +52,7 @@ namespace Server.components.Uno
         public void AddCardToHand(Card card)
         {
             var y = (Console.WindowHeight / 3) - 2;
-            Debug.WriteLine(WindowsHeight);
+            // Debug.WriteLine(WindowsHeight);
             if (WindowsHeight != Console.WindowHeight)
             {
                 WindowsHeight = Console.WindowHeight;
@@ -86,7 +86,7 @@ namespace Server.components.Uno
         {
             var result = false;
 
-            var currentCard = gameManager.CurrenCard;
+            var currentCard = gameManager.CurrentCard;
             Card playerCard = null;
             foreach (var card in Hand.Where(card => card.IsSelected).ToList())
             {

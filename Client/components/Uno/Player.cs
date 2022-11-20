@@ -21,7 +21,7 @@ namespace Client.components.Uno
         public static void AddCardToHand(Card card)
         {
             var y = (Console.WindowHeight / 3) - 2;
-            Debug.WriteLine(WindowsHeight);
+            // Debug.WriteLine(WindowsHeight);
             if (WindowsHeight != Console.WindowHeight)
             {
                 WindowsHeight = Console.WindowHeight;

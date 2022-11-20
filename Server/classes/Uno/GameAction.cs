@@ -61,8 +61,8 @@ namespace Server.classes.Uno
             }
             else if (gameManager.CurrentPlayer().ColorSelector)
             {
-                gameManager.CurrenCard.Color = ColorSelector.CurrentColor();
-                Writer.ObjForWrite.Add(gameManager.CurrenCard);
+                gameManager.CurrentCard.Color = ColorSelector.CurrentColor();
+                Writer.ObjForWrite.Add(gameManager.CurrentCard);
                 Writer.ObjForClear.Add(gameManager.ColorSelector);
                 gameManager.CurrentPlayer().ColorSelector = false;
                 gameManager.CurrentPlayer().SelectedDeck = true;

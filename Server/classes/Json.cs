@@ -9,7 +9,7 @@ namespace Server.classes
     {
         public JsonType Type { get; set; }
         
-        public string userId;
+        public string UserId;
         public object obj { get; set; }
         // public string json { get; set; }
         
@@ -57,16 +57,15 @@ namespace Server.classes
         public byte[] Send()
         {
             var res = Serialize();
-            Debug.WriteLine(res);
+            Debug.WriteLine("Send Data:" + res);
             return Encoding.ASCII.GetBytes(res);
             // Serialize();
             // Debug.WriteLine(json);
             // return GetBytes();
         }
-        public object Receive(byte[] bytes)
+        public Json Receive(byte[] bytes)
         {
-            var x = Deserialize<object>(bytes);
-            return x.obj;
+            return Deserialize<Json>(bytes);
             // SetBytes(bytes);
             // Deserialize<object>();
         }
@@ -75,9 +74,8 @@ namespace Server.classes
     public enum JsonType
     {
         Init = 1,
-        CurrentCard = 2,
         Hand = 3,
-        Deck = 4,
+        Turn = 5,
     }
     
 }

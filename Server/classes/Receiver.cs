@@ -6,7 +6,11 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using Newtonsoft.Json;
+using Server.classes.Uno;
 using Server.components;
+using Server.components.Uno;
+using Server.objects;
 
 namespace Server.classes
 {
@@ -56,10 +60,43 @@ namespace Server.classes
                 // clientSockets.Remove(current);
                 return;
             }
-            byte[] recBuf = new byte[received];
-            Array.Copy(Program.buffer, recBuf, received);
-            string text = Encoding.ASCII.GetString(recBuf);
-            Debug.WriteLine("Received Text: " + text);
+            var dataByte = new byte[received];
+            Buffer.BlockCopy(Program.buffer, 0, dataByte, 0, received);
+            // TODO: Remove for production (Display received data)
+            var data = System.Text.Encoding.ASCII.GetString(dataByte);
+            Debug.WriteLine("Received Data: "+data);
+            
+            var json = new Json();
+            var x = json.Receive(dataByte);
+            switch (x.Type)
+            {
+                case JsonType.Turn:
+                    var a = JsonConvert.DeserializeObject<Turn>(JsonConvert.SerializeObject(x.obj));
+                    var player = Program.GameManager.PlayerManager.Players.First(e => e.Id == x.UserId);
+                    if (a != null)
+                    {
+                        if(a.PickUp)
+                            player.AddCardToHand(Program.GameManager.ShuffledDeck.Pop());
+                        else
+                        {
+                            var card = player.Hand.First(e => e.Id == a.CurrentCard.Id);
+                            player.Hand.Remove(card);
+                            Program.GameManager.AddDiscardPile(card);
+                        }
+                        var w = new Turn
+                        {
+                            CanPlay = true,
+                            Hand = player.Hand,
+                            CurrentCard = Program.GameManager.CurrentCard,
+                            DeckCard = Program.GameManager._deckCard
+                        };
+                        var y = new Json(JsonType.Turn, w).Send();
+                        Sender.Add(new Send(player, y));
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             
             
 

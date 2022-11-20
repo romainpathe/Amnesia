@@ -4,52 +4,46 @@ using Client.components.Uno;
 
 namespace Client.classes.Uno
 {
-    [Serializable()]
     public class GameManager
     {
-        public readonly Stack<Card> ShuffledDeck = CardManager.CreateDeck("random");
         public static Card DeckCard { get; set; }
         
         public readonly ColorSelector ColorSelector = new ColorSelector();
         private Stack<Card> _discardPile = new Stack<Card>();
         public static Card CurrenCard { get; set; }
-        internal int CurrentPlayerIndex { get; set; } = 0;
-        private int _direction = 1;
-        private int _currentColor = 0;
+        public static bool CanPlay { get; set; } = false;
 
-        public const int NumberOfCardsToDraw = 2;
-        public bool IsGameFinished { get; private set; }
+        public static bool IsGameFinished { get; private set; }
 
         public void StartGame()
         {
             
         }
 
-        private void CurrentGame()
+        public static void CurrentGame()
         {
-            DrawDeck();
             while (true)
             {
                 Player.DrawHand();
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.LeftArrow:
-                        GameAction.LeftArrow(this);
+                        GameAction.LeftArrow();
                         break;
                     case ConsoleKey.RightArrow:
-                        GameAction.RightArrow(this);
+                        GameAction.RightArrow();
                         break;
                     case ConsoleKey.DownArrow:
-                        GameAction.DownArrow(this);
+                        GameAction.DownArrow();
                         DrawDeck();
                         break;
                     case ConsoleKey.UpArrow:
-                        GameAction.UpArrow(this);
+                        GameAction.UpArrow();
                         DrawDeck();
                         break;
                     case ConsoleKey.Enter:
-                        GameAction.Enter(this);
-                        DrawDeck();
+                        GameAction.Enter();
+                        // DrawDeck();
                         break;
                     case ConsoleKey.Escape:
                         IsGameFinished = true;
@@ -212,12 +206,11 @@ namespace Client.classes.Uno
             card.Y = 1;
             Writer.ObjForWrite.Add(card);
         }
-        private void DrawDeck()
+        private static void DrawDeck()
         {
             DeckCard.IsSelected = Player.SelectedDeck;
             DeckCard.X = Console.WindowWidth / 2 + 2;
             DeckCard.Y = 1;
-            DeckCard.Value = ShuffledDeck.Count.ToString();
             Writer.ObjForWrite.Add(DeckCard);
         }
 

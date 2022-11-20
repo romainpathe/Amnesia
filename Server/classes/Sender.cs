@@ -38,6 +38,7 @@ namespace Server.classes
                 var obj = ObjForSend[0];
                 try
                 {
+                    Debug.WriteLine("Send to: " + obj.player.Id);
                     obj?.player.Socket.Send(obj.data);
                 }
                 catch (Exception e)

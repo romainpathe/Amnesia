@@ -56,6 +56,7 @@
         <Compile Include="components\Uno\ColorSelector.cs" />
         <Compile Include="components\Uno\Player.cs" />
         <Compile Include="interfaces\IDrawable.cs" />
+        <Compile Include="objects\Turn.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
