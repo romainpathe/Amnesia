@@ -8,6 +8,7 @@ namespace Client.classes
     public class Json
     {
         public JsonType Type { get; set; }
+        public string userId = Program.Id; 
         public object obj { get; set; }
         // public string json { get; set; }
         
@@ -71,9 +72,10 @@ namespace Client.classes
 
     public enum JsonType
     {
-        Card = 1,
-        Player = 2,
-        Game = 3,
+        Init = 1,
+        CurrentCard = 2,
+        Hand = 3,
+        Deck = 4,
     }
     
 }

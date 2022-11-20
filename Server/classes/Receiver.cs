@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using Server.components;
 
@@ -20,23 +24,49 @@ namespace Server.classes
             _thread.Start();
         }
 
+        [SuppressMessage("ReSharper.DPA", "DPA0001: Memory allocation issues")]
         public static void Receive()
         {
             while (true)
             {
-                foreach (var player in Program.GameManager.PlayerManager.Players)
+                var players = Program.GameManager.PlayerManager.Players.ToList().Where(player => !player.ReceiverEnabled);
+                foreach (var player in players)
                 {
-                    var buffer = new byte[2048];
-                    var received = player.Socket.Receive(buffer, SocketFlags.None);
-                    if (received == 0) continue;
-                    var dataByte = new byte[received];
-                    System.Buffer.BlockCopy(buffer, 0, dataByte, 0, received);
-                    var data = System.Text.Encoding.ASCII.GetString(dataByte);
-                    Debug.WriteLine(data);
-                    
+                    player.Socket.BeginReceive(Program.buffer, 0, Program.BUFFER_SIZE, SocketFlags.None, ReceiveCallback,player.Socket);
+                    player.ReceiverEnabled = true;
                 }
             }
         }
+        
+        
+        public static void ReceiveCallback(IAsyncResult ar)
+        {
+            Socket current = (Socket)ar.AsyncState;
+            int received;
+            try
+            {
+                received = current.EndReceive(ar);
+            }
+            catch (SocketException)
+            {
+                Console.WriteLine("Client forcefully disconnected");
+                // Don't shutdown because the socket may be disposed and its disconnected anyway.
+                current.Close(); 
+                Program.GameManager.PlayerManager.RemovePlayerBySocket(current);
+                // clientSockets.Remove(current);
+                return;
+            }
+            byte[] recBuf = new byte[received];
+            Array.Copy(Program.buffer, recBuf, received);
+            string text = Encoding.ASCII.GetString(recBuf);
+            Debug.WriteLine("Received Text: " + text);
+            
+            
+
+            current.BeginReceive(Program.buffer, 0, Program.BUFFER_SIZE, SocketFlags.None, ReceiveCallback, current);
+        }
+        
+        
         
         // private static void ReceiveResponse()
         // {

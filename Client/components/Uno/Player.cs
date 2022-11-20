@@ -7,25 +7,18 @@ using Client.classes.Uno;
 namespace Client.components.Uno
 {
     [Serializable()]
-    public class Player
+    public static class Player
     {
-        public string Name { get; }
-        public List<Card> Hand { get; }
+        public static string Name { get; }
+        public static List<Card> Hand { get; set; } = new List<Card>();
         public static List<Card> OldHand { get; set; }
-        public int WindowsHeight { get; set; }
-        public bool SelectedDeck { get; set; }
-        public int LastCardSelected { get; set; }
-        public bool ColorSelector { get; set; }
+        public static int WindowsHeight { get; set; }
+        public static bool SelectedDeck { get; set; } = true;
+        public static int LastCardSelected { get; set; }
+        public static bool ColorSelector { get; set; }
 
-        public Player()
-        {
-            SelectedDeck = true;
-            // Console.WriteLine("Enter your name: ");
-            // Name = Console.ReadLine();
-            Hand = new List<Card>();
-        }
         
-        public void AddCardToHand(Card card)
+        public static void AddCardToHand(Card card)
         {
             var y = (Console.WindowHeight / 3) - 2;
             Debug.WriteLine(WindowsHeight);
@@ -44,7 +37,7 @@ namespace Client.components.Uno
             LastCardSelected = 1;
         }
 
-        private void ResetPosition()
+        private static void ResetPosition()
         {
             var space = (Console.WindowWidth % Card.Width)/2;
             if (Card.Width * Hand.Count < Console.WindowWidth)
@@ -58,11 +51,11 @@ namespace Client.components.Uno
             }
         }
 
-        public bool CanPlayCurrentCard(GameManager gameManager)
+        public static bool CanPlayCurrentCard(GameManager gameManager)
         {
             var result = false;
 
-            var currentCard = gameManager.CurrenCard;
+            var currentCard = GameManager.CurrenCard;
             Card playerCard = null;
             foreach (var card in Hand.Where(card => card.IsSelected).ToList())
             {
@@ -76,7 +69,7 @@ namespace Client.components.Uno
             return result;
         }
         
-        public Card PlayCard(bool remove = false)
+        public static Card PlayCard(bool remove = false)
         {
             Card result = null;
             OldHand = new List<Card>();
@@ -105,15 +98,15 @@ namespace Client.components.Uno
             return result;
         }
         
-        public void DrawHand()
+        public static void DrawHand()
         {
             foreach (var card in Hand)
             {
-                Writer.ObjForWrite.Add(card);
+                Writer.Write(card);
             }
         }
 
-        public void SelectNext()
+        public static void SelectNext()
         {
             var needMove = false;
             for (var i = 0; i < Hand.Count; i++)
@@ -159,7 +152,7 @@ namespace Client.components.Uno
             }
         }
 
-        public void SelectPrevious()
+        public static void SelectPrevious()
         {
             var needMove = false;
             for (var i = 0; i < Hand.Count; i++)
@@ -210,7 +203,7 @@ namespace Client.components.Uno
             if(OldHand == null) return;
             foreach (var card in OldHand)
             {
-                Writer.ObjForClear.Add(card);
+                Writer.Clear(card);
             }
         }
         

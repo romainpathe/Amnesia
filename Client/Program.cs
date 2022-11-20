@@ -2,25 +2,30 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using Client.classes;
-using Client.components.Uno;
-using Newtonsoft.Json;
+using Client.classes.Uno;
 
 namespace Client
 {
     internal class Program
     {
-        private static readonly Socket ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        private const int PORT = 100;
+        public static readonly Socket ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        private const int PORT = 1000;
+        public static string Id = null;
         
+        public static int LongestCard { get; set; }
         public static readonly Random Random = new Random();
         public static int WindowsWidth = Console.WindowWidth;
         public static int WindowsHeight = Console.WindowHeight;
+        public static GameManager GameManager { get; set; }
         public static void Main(string[] args)
         {
             // StartClient();
             ConnectToServer();
+            Writer.Init();
+            Sender.Init();
+            Receiver.Init();
+            GameLoop();
         }
         
         private static void ConnectToServer()
@@ -43,9 +48,17 @@ namespace Client
             }
 
             Console.Clear();
-            Console.WriteLine("Connected");
+            Debug.WriteLine("Connected to server");
         }
-        
+
+        private static void GameLoop()
+        {
+            while (true)
+            {
+                // var t = new Send(x.Send());
+                // Sender.ObjForSend.Add(t);
+            }
+        }
         
         
         

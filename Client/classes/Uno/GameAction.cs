@@ -9,42 +9,42 @@ namespace Client.classes.Uno
         
         public static void UpArrow(GameManager gameManager)
         {
-            if (gameManager.CurrentPlayer().SelectedDeck) return;
-            if(gameManager.CurrentPlayer().ColorSelector) return;
-            gameManager.CurrentPlayer().SelectedDeck = true;
-            gameManager.CurrentPlayer().Hand.First(card => card.IsSelected).IsSelected = false;
+            if (Player.SelectedDeck) return;
+            if(Player.ColorSelector) return;
+            Player.SelectedDeck = true;
+            Player.Hand.First(card => card.IsSelected).IsSelected = false;
         }
         
         public static void DownArrow(GameManager gameManager)
         {
-            if(!gameManager.CurrentPlayer().SelectedDeck) return;
-            if(gameManager.CurrentPlayer().ColorSelector) return;
-            gameManager.CurrentPlayer().SelectedDeck = false;
-            var fCard  = gameManager.CurrentPlayer().Hand[gameManager.CurrentPlayer().LastCardSelected];
+            if(!Player.SelectedDeck) return;
+            if(Player.ColorSelector) return;
+            Player.SelectedDeck = false;
+            var fCard  = Player.Hand[Player.LastCardSelected];
             if (fCard != null) fCard.IsSelected = true;
         }
         
         public static void LeftArrow(GameManager gameManager)
         {
-            if (gameManager.CurrentPlayer().ColorSelector)
+            if (Player.ColorSelector)
             {
                 ColorSelector.SelectPrevious();
             }
             else
             {
-                gameManager.CurrentPlayer().SelectPrevious();
+                Player.SelectPrevious();
             }
         }
         
         public static void RightArrow(GameManager gameManager)
         {
-            if (gameManager.CurrentPlayer().ColorSelector)
+            if (Player.ColorSelector)
             {
                 ColorSelector.SelectNext();
             }
             else
             {
-                gameManager.CurrentPlayer().SelectNext();
+                Player.SelectNext();
             }
         }
         
@@ -55,22 +55,22 @@ namespace Client.classes.Uno
         
         public static void Enter(GameManager gameManager)
         {
-            if (gameManager.CurrentPlayer().SelectedDeck)
+            if (Player.SelectedDeck)
             {
-                gameManager.CurrentPlayer().AddCardToHand(gameManager.ShuffledDeck.Pop());
+                Player.AddCardToHand(gameManager.ShuffledDeck.Pop());
             }
-            else if (gameManager.CurrentPlayer().ColorSelector)
+            else if (Player.ColorSelector)
             {
-                gameManager.CurrenCard.Color = ColorSelector.CurrentColor();
-                Writer.ObjForWrite.Add(gameManager.CurrenCard);
+                GameManager.CurrenCard.Color = ColorSelector.CurrentColor();
+                Writer.ObjForWrite.Add(GameManager.CurrenCard);
                 Writer.ObjForClear.Add(gameManager.ColorSelector);
-                gameManager.CurrentPlayer().ColorSelector = false;
-                gameManager.CurrentPlayer().SelectedDeck = true;
+                Player.ColorSelector = false;
+                Player.SelectedDeck = true;
             }else
             {
-                var canPlay =gameManager.CurrentPlayer().CanPlayCurrentCard(gameManager);
+                var canPlay =Player.CanPlayCurrentCard(gameManager);
                 if (!canPlay) return;
-                var card = gameManager.CurrentPlayer().PlayCard(true);
+                var card = Player.PlayCard(true);
                 if (card.Color == ConsoleColor.White)
                 {
                     gameManager.ColorSelector.Draw();

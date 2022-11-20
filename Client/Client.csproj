@@ -42,12 +42,16 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="classes\GameInfo.cs" />
         <Compile Include="classes\Json.cs" />
+        <Compile Include="classes\Receiver.cs" />
+        <Compile Include="classes\Sender.cs" />
         <Compile Include="classes\Uno\CardManager.cs" />
         <Compile Include="classes\Uno\GameAction.cs" />
         <Compile Include="classes\Uno\GameManager.cs" />
         <Compile Include="classes\Uno\PlayerManager.cs" />
         <Compile Include="classes\Uno\Writer.cs" />
+        <Compile Include="components\Send.cs" />
         <Compile Include="components\Uno\Card.cs" />
         <Compile Include="components\Uno\ColorSelector.cs" />
         <Compile Include="components\Uno\Player.cs" />

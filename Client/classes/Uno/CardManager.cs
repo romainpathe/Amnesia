@@ -15,7 +15,7 @@ namespace Client.classes.Uno
         private static readonly Dictionary<string, int> CardWithoutColor = new Dictionary<string, int>{ { "Wild", 4 }, { "Wild Draw Four", 4 }};
         // private static readonly Dictionary<string, int> CardWithColor = new Dictionary<string, int>{ { "Zero", 1 }, { "One", 2 }, { "Two", 2 }, { "Three", 2 }, { "Four", 2 }, { "Five", 2 }, { "Six", 2 }, { "Seven", 2 }, { "Eight", 2 }, { "Nine", 2 }, { "Skip", 2 }, { "Reverse", 2 }, { "Draw Two", 2 } };
         private static readonly Dictionary<string, int> CardWithColor = new Dictionary<string, int>{ { "Zero", 1 }, { "One", 2 }, { "Two", 2 }, { "Three", 2 }, { "Four", 2 }, { "Five", 2 }, };
-        public static int LongestCard { get; private set; }
+        
 
         /// <summary>
         /// Function for create the deck of cards and order it if you want
@@ -29,10 +29,10 @@ namespace Client.classes.Uno
             {
                 foreach (var card in CardWithColor)
                 {
-                    if(card.Key.Length > LongestCard)
-                    {
-                        LongestCard = card.Key.Length;
-                    }
+                    // if(card.Key.Length > LongestCard)
+                    // {
+                    //     LongestCard = card.Key.Length;
+                    // }
                     for (var i = 0; i < card.Value; i++)
                     {
                         deck.Add(new Card(card.Key, color));
@@ -41,10 +41,10 @@ namespace Client.classes.Uno
             }
             foreach (var card in CardWithoutColor)
             {
-                if(card.Key.Length > LongestCard)
-                {
-                    LongestCard = card.Key.Length;
-                }
+                // if(card.Key.Length > LongestCard)
+                // {
+                //     LongestCard = card.Key.Length;
+                // }
                 for (var i = 0; i < card.Value; i++)
                 {
                     deck.Add(new Card(card.Key));

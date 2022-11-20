@@ -62,7 +62,7 @@ namespace Server.classes.Uno
                     finalDeck.Push(card);
                 }
             }
-
+            InitGame.LongestCard = LongestCard;
             return finalDeck;
 
         }

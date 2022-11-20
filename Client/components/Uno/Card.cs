@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using Client.classes;
 using Client.classes.Uno;
 using Client.interfaces;
+using Newtonsoft.Json;
 
 namespace Client.components.Uno
 {
@@ -10,14 +12,14 @@ namespace Client.components.Uno
     {
         
         private readonly bool _isDeck;
-        public string Id = Guid.NewGuid().ToString();
+        public string Id { get; set; }
         public ConsoleColor Color { get; set; }
         public string Value { get; set; }
         public bool IsSelected { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
 
-        public static int Width => CardManager.LongestCard + 4;
+        public static int Width => Program.LongestCard + 4;
         
         public Card()
         {
@@ -26,14 +28,12 @@ namespace Client.components.Uno
             IsSelected = false;
             _isDeck = true;
         }
-        
         public Card(string value, ConsoleColor color = ConsoleColor.White)
         {
             Value = value;
             Color = color;
             IsSelected = false;
         }
-
         private Card(Card card)
         {
             Value = card.Value;
@@ -43,7 +43,18 @@ namespace Client.components.Uno
             X = card.X;
             Y = card.Y;
         }
-
+        [JsonConstructor]
+        public Card(bool _isDeck, string Id, ConsoleColor Color, string Value, bool IsSelected, int X, int Y)
+        {
+            this._isDeck = _isDeck;
+            this.Id = Id;
+            this.Color = Color;
+            this.Value = Value;
+            this.IsSelected = IsSelected;
+            this.X = X;
+            this.Y = Y;
+        }
+        
         public void MoveLeft(int min, int max)
         {
             X += Width;

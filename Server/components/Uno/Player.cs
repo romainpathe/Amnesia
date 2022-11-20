@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
+using Newtonsoft.Json;
+using Server.classes;
 using Server.classes.Uno;
 
 namespace Server.components.Uno
@@ -11,12 +13,22 @@ namespace Server.components.Uno
     public class Player
     {
         public string Name { get; }
+        [JsonIgnore]
         public Socket Socket { get; }
+        public string Id { get; } = Guid.NewGuid().ToString();
+        [JsonIgnore]
+        public bool ReceiverEnabled { get; set; }
+        [JsonIgnore]
         public List<Card> Hand { get; }
+        [JsonIgnore]
         public static List<Card> OldHand { get; set; }
+        [JsonIgnore]
         public int WindowsHeight { get; set; }
+        [JsonIgnore]
         public bool SelectedDeck { get; set; }
+        [JsonIgnore]
         public int LastCardSelected { get; set; }
+        [JsonIgnore]
         public bool ColorSelector { get; set; }
 
         public Player(Socket socket)
@@ -27,6 +39,15 @@ namespace Server.components.Uno
             // Name = Console.ReadLine();
             Hand = new List<Card>();
         }
+
+        public void SendHand()
+        {
+            var x = new Json(JsonType.Hand, Hand).Send();
+            Sender.Add(new Send(this, x));
+        }
+        
+        
+        
         
         public void AddCardToHand(Card card)
         {

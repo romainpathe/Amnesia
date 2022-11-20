@@ -17,14 +17,25 @@ namespace Client.classes.Uno
         
         public static void Init()
         {
-            _thread = new Thread(Write)
+            _thread = new Thread(WriteLoop)
             {
                 Name = "Writer"
             };
             _thread.Start();
         }
 
-        private static void Write()
+
+        public static void Write(object obj)
+        {
+            ObjForWrite.Add(obj);
+        }
+        
+        public static void Clear(object obj)
+        {
+            ObjForClear.Add(obj);
+        }
+
+        private static void WriteLoop()
         {
             while (true)
             {

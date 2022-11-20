@@ -8,12 +8,11 @@ namespace Client.classes.Uno
     public class GameManager
     {
         public readonly Stack<Card> ShuffledDeck = CardManager.CreateDeck("random");
-        private Card _deckCard = new Card();
+        public static Card DeckCard { get; set; }
         
         public readonly ColorSelector ColorSelector = new ColorSelector();
         private Stack<Card> _discardPile = new Stack<Card>();
-        public Card CurrenCard { get; set; }
-        public readonly List<Player> Players = new List<Player>();
+        public static Card CurrenCard { get; set; }
         internal int CurrentPlayerIndex { get; set; } = 0;
         private int _direction = 1;
         private int _currentColor = 0;
@@ -23,10 +22,7 @@ namespace Client.classes.Uno
 
         public void StartGame()
         {
-            Players.Add(new Player());
-            DistributeCards();
-            AddDiscardPile(ShuffledDeck.Pop());
-            CurrentGame();
+            
         }
 
         private void CurrentGame()
@@ -34,7 +30,7 @@ namespace Client.classes.Uno
             DrawDeck();
             while (true)
             {
-                Players[CurrentPlayerIndex].DrawHand();
+                Player.DrawHand();
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.LeftArrow:
@@ -218,29 +214,14 @@ namespace Client.classes.Uno
         }
         private void DrawDeck()
         {
-            _deckCard.IsSelected = CurrentPlayer().SelectedDeck;
-            _deckCard.X = Console.WindowWidth / 2 + 2;
-            _deckCard.Y = 1;
-            _deckCard.Value = ShuffledDeck.Count.ToString();
-            Writer.ObjForWrite.Add(_deckCard);
+            DeckCard.IsSelected = Player.SelectedDeck;
+            DeckCard.X = Console.WindowWidth / 2 + 2;
+            DeckCard.Y = 1;
+            DeckCard.Value = ShuffledDeck.Count.ToString();
+            Writer.ObjForWrite.Add(DeckCard);
         }
 
-        private void DistributeCards()
-        {
-            for (var i = 0; i < NumberOfCardsToDraw; i++)
-            {
-                foreach (var player in Players)
-                {
-                    var card = ShuffledDeck.Pop();
-                    player.AddCardToHand(card);
-                }
-            }
-        }
 
-        public Player CurrentPlayer()
-        {
-            return Players[CurrentPlayerIndex];
-        }
 
         // public void Redraw()
         // {
