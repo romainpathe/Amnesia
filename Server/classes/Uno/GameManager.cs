@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Server.components;
 using Server.components.Uno;
@@ -49,7 +50,15 @@ namespace Server.classes.Uno
                 Sender.Add(new Send(player, y));
             }
             
-            
+            var w = new Turn
+            {
+                CanPlay = true,
+                Hand = PlayerManager.Players.First().Hand,
+                CurrentCard = Program.GameManager.CurrentCard,
+                DeckCard = Program.GameManager._deckCard
+            };
+            var a = new Json(JsonType.Turn, w).Send();
+            Sender.Add(new Send(PlayerManager.Players.First(), a));
             
         }
 

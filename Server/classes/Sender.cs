@@ -33,19 +33,25 @@ namespace Server.classes
             {
                 // Sleep because data send in the same time, and client can't read it
                 // Todo: If Client can't read data, increase sleep time
-                Thread.Sleep(65);
                 if (ObjForSend.Count <= 0) continue;
                 var obj = ObjForSend[0];
                 try
                 {
                     Debug.WriteLine("Send to: " + obj.player.Id);
+                    Debug.WriteLine("Send to: " + obj.data);
                     obj?.player.Socket.Send(obj.data);
                 }
                 catch (Exception e)
                 {
+                    Debug.WriteLine("Error:");
                     Debug.WriteLine(e.Message);
                 }
+                finally
+                {
+                    Debug.WriteLine("Finally");
+                }
                 ObjForSend.RemoveAt(0);
+                Thread.Sleep(100);
             }
             // ReSharper disable once FunctionNeverReturns
         }

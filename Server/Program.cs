@@ -5,7 +5,9 @@ using System.Net;
 using System.Net.Sockets;
 using Server.classes;
 using Server.classes.Uno;
+using Server.components;
 using Server.components.Uno;
+using Server.objects;
 
 namespace Server
 {
@@ -195,8 +197,19 @@ namespace Server
         //     Console.WriteLine("\n Press any key to continue...");
         //     Console.ReadKey();
         // }
-        
-        
+
+        public static void Test(Player player)
+        {
+            var w = new Turn
+            {
+                CanPlay = true,
+                Hand = player.Hand,
+                CurrentCard = Program.GameManager.CurrentCard,
+                DeckCard = Program.GameManager._deckCard
+            };
+            var y = new Json(JsonType.Turn, w).Send();
+            Sender.Add(new Send(player, y));
+        }
         
         
         

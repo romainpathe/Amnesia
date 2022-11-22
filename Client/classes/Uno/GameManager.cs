@@ -10,7 +10,7 @@ namespace Client.classes.Uno
         
         public readonly ColorSelector ColorSelector = new ColorSelector();
         private Stack<Card> _discardPile = new Stack<Card>();
-        public static Card CurrenCard { get; set; }
+        public static Card CurrentCard { get; set; }
         public static bool CanPlay { get; set; } = false;
 
         public static bool IsGameFinished { get; private set; }
@@ -196,11 +196,11 @@ namespace Client.classes.Uno
 
         public void AddDiscardPile(Card card)
         {
-            if (CurrenCard != null)
+            if (CurrentCard != null)
             {
-                Writer.ObjForClear.Add(CurrenCard);
+                Writer.ObjForClear.Add(CurrentCard);
             }
-            CurrenCard = card;
+            CurrentCard = card;
             _discardPile.Push(card);
             card.X = Console.WindowWidth / 2 - Card.Width;
             card.Y = 1;

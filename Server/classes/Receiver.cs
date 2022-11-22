@@ -72,7 +72,7 @@ namespace Server.classes
             {
                 case JsonType.Turn:
                     var a = JsonConvert.DeserializeObject<Turn>(JsonConvert.SerializeObject(x.obj));
-                    var player = Program.GameManager.PlayerManager.Players.First(e => e.Id == x.UserId);
+                    var player = Program.GameManager.PlayerManager.Players.First(e => e.Socket == current);
                     if (a != null)
                     {
                         if(a.PickUp)
@@ -83,16 +83,17 @@ namespace Server.classes
                             player.Hand.Remove(card);
                             Program.GameManager.AddDiscardPile(card);
                         }
-                        var w = new Turn
-                        {
-                            CanPlay = true,
-                            Hand = player.Hand,
-                            CurrentCard = Program.GameManager.CurrentCard,
-                            DeckCard = Program.GameManager._deckCard
-                        };
-                        var y = new Json(JsonType.Turn, w).Send();
-                        Sender.Add(new Send(player, y));
                     }
+                    var w = new Turn
+                    {
+                        CanPlay = true,
+                        Hand = player.Hand,
+                        CurrentCard = Program.GameManager.CurrentCard,
+                        DeckCard = Program.GameManager._deckCard
+                    };
+                    var y = new Json(JsonType.Turn, w).Send();
+                    Sender.Add(new Send(player, y));
+                    // Program.Test(player);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

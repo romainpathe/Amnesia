@@ -34,6 +34,7 @@ namespace Client.classes
                     Program.ClientSocket.Send(obj.data, 0, obj.data.Length, SocketFlags.None);
                 }
                 ObjForSend.RemoveAt(0);
+                Thread.Sleep(65);
             }
         }
         

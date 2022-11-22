@@ -11,7 +11,8 @@ namespace Client.classes.Uno
         
         public static void UpArrow()
         {
-            if (Player.SelectedDeck) return;
+            if(!GameManager.CanPlay) return;
+            if(Player.SelectedDeck) return;
             if(Player.ColorSelector) return;
             Player.SelectedDeck = true;
             Player.Hand.First(card => card.IsSelected).IsSelected = false;
@@ -19,6 +20,7 @@ namespace Client.classes.Uno
         
         public static void DownArrow()
         {
+            if(!GameManager.CanPlay) return;
             if(!Player.SelectedDeck) return;
             if(Player.ColorSelector) return;
             Player.SelectedDeck = false;
@@ -28,6 +30,7 @@ namespace Client.classes.Uno
         
         public static void LeftArrow()
         {
+            if(!GameManager.CanPlay) return;
             if (Player.ColorSelector)
             {
                 ColorSelector.SelectPrevious();
@@ -40,6 +43,7 @@ namespace Client.classes.Uno
         
         public static void RightArrow()
         {
+            if(!GameManager.CanPlay) return;
             if (Player.ColorSelector)
             {
                 ColorSelector.SelectNext();
@@ -64,6 +68,8 @@ namespace Client.classes.Uno
                 {
                     PickUp = true,
                 };
+                Sender.ObjForSend.Add(new Send(new Json(JsonType.Turn, turn).Send()));
+                Sender.ObjForSend.Add(new Send(new Json(JsonType.Turn, turn).Send()));
                 Sender.ObjForSend.Add(new Send(new Json(JsonType.Turn, turn).Send()));
                 GameManager.CanPlay = false;
                 GameManager.DeckCard.IsSelected = false;

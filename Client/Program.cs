@@ -4,6 +4,9 @@ using System.Net;
 using System.Net.Sockets;
 using Client.classes;
 using Client.classes.Uno;
+using Client.components;
+using Client.components.Uno;
+using Client.objects;
 
 namespace Client
 {
@@ -27,22 +30,24 @@ namespace Client
             ConnectToServer();
             Writer.Init();
             Sender.Init();
-            Receiver.Init();
+            // Receiver.Init();
+            // Test();
             GameLoop();
         }
         
         private static void ConnectToServer()
         {
-            int attempts = 0;
+            var attempts = 0;
 
             while (!ClientSocket.Connected)
             {
                 try
                 {
                     attempts++;
-                    Console.WriteLine("Connection attempt " + attempts);
+                    Debug.WriteLine("Connection attempt " + attempts);
                     // Change IPAddress.Loopback to a remote IP to connect to a remote host.
                     ClientSocket.Connect(IPAddress.Loopback, PORT);
+                    Program.ClientSocket.BeginReceive(Program.buffer, 0, Program.BUFFER_SIZE, SocketFlags.None, Receiver.ReceiveCallback,Program.ClientSocket);
                 }
                 catch (SocketException) 
                 {
@@ -63,6 +68,19 @@ namespace Client
             }
         }
         
+        
+        public static void Test()
+        {
+            var w = new Turn
+            {
+                CanPlay = true,
+                Hand = Player.Hand,
+                CurrentCard = GameManager.CurrentCard,
+                DeckCard = GameManager.DeckCard
+            };
+            var y = new Json(JsonType.Turn, w).Send();
+            Sender.ObjForSend.Add(new Send(y));
+        }
         
         
         

@@ -55,7 +55,7 @@ namespace Client.components.Uno
         {
             var result = false;
 
-            var currentCard = GameManager.CurrenCard;
+            var currentCard = GameManager.CurrentCard;
             Card playerCard = null;
             foreach (var card in Hand.Where(card => card.IsSelected).ToList())
             {
