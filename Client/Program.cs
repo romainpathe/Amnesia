@@ -14,7 +14,7 @@ namespace Client
     {
         public static readonly Socket ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         public const int BUFFER_SIZE = 8192;
-        private const int PORT = 1000;
+        private const int PORT = 80;
         public static readonly byte[] buffer = new byte[BUFFER_SIZE];
         public static string Id = null;
         
@@ -30,7 +30,7 @@ namespace Client
             ConnectToServer();
             Writer.Init();
             Sender.Init();
-            // Receiver.Init();
+            Receiver.Init();
             // Test();
             GameLoop();
         }
@@ -46,8 +46,8 @@ namespace Client
                     attempts++;
                     Debug.WriteLine("Connection attempt " + attempts);
                     // Change IPAddress.Loopback to a remote IP to connect to a remote host.
-                    ClientSocket.Connect(IPAddress.Loopback, PORT);
-                    Program.ClientSocket.BeginReceive(Program.buffer, 0, Program.BUFFER_SIZE, SocketFlags.None, Receiver.ReceiveCallback,Program.ClientSocket);
+                    ClientSocket.Connect(IPAddress.Parse("10.0.79.255"), PORT);
+                    // Program.ClientSocket.BeginReceive(Program.buffer, 0, Program.BUFFER_SIZE, SocketFlags.None, Receiver.ReceiveCallback,Program.ClientSocket);
                 }
                 catch (SocketException) 
                 {

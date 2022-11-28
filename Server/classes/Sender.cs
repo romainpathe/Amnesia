@@ -11,7 +11,7 @@ namespace Server.classes
     {
         
         private static Thread _thread;
-        public static readonly List<Send> ObjForSend = new List<Send>();
+        public static readonly Queue<Send> ObjForSend = new Queue<Send>();
 
         public static void Init()
         {
@@ -24,7 +24,7 @@ namespace Server.classes
 
         public static void Add(Send send)
         {
-            ObjForSend.Add(send);
+            ObjForSend.Enqueue(send);
         }
         
         private static void Send()
@@ -34,7 +34,7 @@ namespace Server.classes
                 // Sleep because data send in the same time, and client can't read it
                 // Todo: If Client can't read data, increase sleep time
                 if (ObjForSend.Count <= 0) continue;
-                var obj = ObjForSend[0];
+                var obj = ObjForSend.Dequeue();
                 try
                 {
                     Debug.WriteLine("Send to: " + obj.player.Id);
@@ -50,7 +50,7 @@ namespace Server.classes
                 {
                     Debug.WriteLine("Finally");
                 }
-                ObjForSend.RemoveAt(0);
+                // ObjForSend.RemoveAt(0);
                 Thread.Sleep(100);
             }
             // ReSharper disable once FunctionNeverReturns

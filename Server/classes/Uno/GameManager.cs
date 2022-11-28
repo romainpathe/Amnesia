@@ -49,6 +49,7 @@ namespace Server.classes.Uno
                 var y = new Json(JsonType.Turn, x).Send();
                 Sender.Add(new Send(player, y));
             }
+            PlayerManager.Players.First().Hand.First().IsSelected = true;
             
             var w = new Turn
             {
@@ -58,6 +59,56 @@ namespace Server.classes.Uno
                 DeckCard = Program.GameManager._deckCard
             };
             var a = new Json(JsonType.Turn, w).Send();
+            Sender.Add(new Send(PlayerManager.Players.First(), a));
+            PlayerManager.Players.First().Hand.First().Value = "0";
+            w = new Turn
+            {
+                CanPlay = true,
+                Hand = PlayerManager.Players.First().Hand,
+                CurrentCard = Program.GameManager.CurrentCard,
+                DeckCard = Program.GameManager._deckCard
+            };
+            a = new Json(JsonType.Turn, w).Send();
+            Sender.Add(new Send(PlayerManager.Players.First(), a));
+            PlayerManager.Players.First().Hand.First().Value = "1";
+            w = new Turn
+            {
+                CanPlay = true,
+                Hand = PlayerManager.Players.First().Hand,
+                CurrentCard = Program.GameManager.CurrentCard,
+                DeckCard = Program.GameManager._deckCard
+            };
+            a = new Json(JsonType.Turn, w).Send();
+            Sender.Add(new Send(PlayerManager.Players.First(), a));
+            PlayerManager.Players.First().Hand.First().Value = "2";
+            w = new Turn
+            {
+                CanPlay = true,
+                Hand = PlayerManager.Players.First().Hand,
+                CurrentCard = Program.GameManager.CurrentCard,
+                DeckCard = Program.GameManager._deckCard
+            };
+            a = new Json(JsonType.Turn, w).Send();
+            Sender.Add(new Send(PlayerManager.Players.First(), a));
+            PlayerManager.Players.First().Hand.First().Value = "3";
+            w = new Turn
+            {
+                CanPlay = true,
+                Hand = PlayerManager.Players.First().Hand,
+                CurrentCard = Program.GameManager.CurrentCard,
+                DeckCard = Program.GameManager._deckCard
+            };
+            a = new Json(JsonType.Turn, w).Send();
+            Sender.Add(new Send(PlayerManager.Players.First(), a));
+            PlayerManager.Players.First().Hand.First().Value = "4";
+            w = new Turn
+            {
+                CanPlay = true,
+                Hand = PlayerManager.Players.First().Hand,
+                CurrentCard = Program.GameManager.CurrentCard,
+                DeckCard = Program.GameManager._deckCard
+            };
+            a = new Json(JsonType.Turn, w).Send();
             Sender.Add(new Send(PlayerManager.Players.First(), a));
             
         }
@@ -71,7 +122,7 @@ namespace Server.classes.Uno
                     UserId = player.Id
                 };
                 var x = new Json(JsonType.Init, game);
-                Sender.ObjForSend.Add(new Send(player, x.Send() ));
+                Sender.Add(new Send(player, x.Send() ));
             }
             StartGame();
         }

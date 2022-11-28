@@ -15,7 +15,7 @@ namespace Server
     {
         private static readonly Socket ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         public const int BUFFER_SIZE = 8192;
-        private const int PORT = 1000;
+        private const int PORT = 80;
         public static readonly byte[] buffer = new byte[BUFFER_SIZE];
         public static readonly Random Random = new Random();
         public static int WindowsWidth = Console.WindowWidth;
@@ -44,7 +44,7 @@ namespace Server
         private static void SetupServer()
         {
             Console.WriteLine("Setting up server...");
-            ServerSocket.Bind(new IPEndPoint(IPAddress.Any, PORT));
+            ServerSocket.Bind(new IPEndPoint(IPAddress.Parse("10.0.79.12"), PORT));
             ServerSocket.Listen(0);
             ServerSocket.BeginAccept(AcceptCallback, null);
             Console.WriteLine("Server setup complete");
